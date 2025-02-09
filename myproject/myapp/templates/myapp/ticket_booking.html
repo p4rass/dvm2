@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ticket Booking</title>
+    <style>
+        .wallet-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background-color: #f4f4f4;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+        .add-money-btn {
+            background-color: green;
+            color: white;
+            padding: 5px 10px;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Book a Ticket</h2>
+
+    <!-- Wallet Balance & Add Money Button -->
+    <div class="wallet-container">
+        <p><strong>Balance: ${{ wallet_balance }}</strong></p>
+        <a href="{% url 'add_money' %}" class="add-money-btn">Add Money</a>
+    </div>
+
+    <form method="POST">
+        {% csrf_token %}
+        <label for="source">Source:</label>
+        {{ form.source }}
+
+        <label for="destination">Destination:</label>
+        {{ form.destination }}
+
+        <label for="date">Date:</label>
+        {{ form.date }}
+
+        <button type="submit">Search Buses</button>
+    </form>
+
+    {% if buses %}
+        <h3>Available Buses</h3>
+        <ul>
+            {% for bus in buses %}
+                <li>
+                    {{ bus.bus_number }} - {{ bus.source }} to {{ bus.destination }} |
+                    Departure: {{ bus.departure_time }} |
+                    Arrival: {{ bus.arrival_time }} |
+                    Seats: {{ bus.available_seats }} |
+                    Fare: ${{ bus.fare }}
+                    <a href="{% url 'book_ticket' bus.id %}">Book</a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+</body>
+</html>

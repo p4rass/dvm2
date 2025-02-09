@@ -1,0 +1,7 @@
+<h1>Admin Dashboard</h1>
+<a href="{% url 'add_bus' %}">Add New Bus</a>
+<ul>
+    {% for bus in buses %}
+        <li>{{ bus.bus_number }} - {{ bus.source }} to {{ bus.destination }}</li>
+    {% endfor %}
+</ul>
